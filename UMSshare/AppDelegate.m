@@ -7,6 +7,10 @@
 //
 
 #import "AppDelegate.h"
+#import "UMSocial.h"
+#import "UMSocialQQHandler.h"
+#import "UMSocialSinaSSOHandler.h"
+#import "UMSocialWechatHandler.h"
 
 @interface AppDelegate ()
 
@@ -16,8 +20,34 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    
+    [UMSocialData setAppKey:@"507fcab25270157b37000010"];
+    
+//    [UMSocialSinaSSOHandler openNewSinaSSOWithAppKey:@"1517297772"
+//                                              secret:@"73343a84009cc69ae7982247238c05e5"
+//     
+//                                         RedirectURL:@"http://api.weibo.com/oauth2/default.html"];
+    
+    //qq/qq空间
+    [UMSocialQQHandler setQQWithAppId:@"100424468" appKey:@"c7394704798a158208a74ab60104f0ba" url:@"http://www.umeng.com/social"];
+    
+    //微信
+    [UMSocialWechatHandler setWXAppId:@"wxd930ea5d5a258f4f" appSecret:@"db426a9829e4b49a0dcac7b4162da6b6" url:@"http://www.umeng.com/social"];
+    
+
     return YES;
+}
+
+-(BOOL)application:(UIApplication *)application openURL:(nonnull NSURL *)url sourceApplication:(nullable NSString *)sourceApplication annotation:(nonnull id)annotation
+{
+    BOOL result = [UMSocialSnsService handleOpenURL:url];
+    
+    if (result  == FALSE){
+        
+        //调用其他的SDK
+    }
+    
+    return result;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
